@@ -13,3 +13,4 @@ Gemfile
 Gemfile.lock
 db/migrate/20160713101348_Create_posts.rb
 db/migrate/20160713101509_Create_comments.rb
+lepro.db
