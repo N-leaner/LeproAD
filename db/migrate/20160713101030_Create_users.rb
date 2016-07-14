@@ -18,5 +18,7 @@ class CreateUsers < ActiveRecord::Migration
 		t.text :comment
   		t.timestamps
   	end
+
+    User.create :name => 'Admin', :password => '1234'
   end
 end
