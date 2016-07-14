@@ -8,7 +8,7 @@ set :database, "sqlite3:lepro.db"
 
 class User < ActiveRecord::Base
 	has_many :posts
-	validates :name, presence: true, length: { in: 1..50 }
+	validates :name, presence: true, length: { in: 1..50 }, uniqueness: { message: "%{value} already exists" } 
 	validates :password, presence: true, length: { in: 3..20 }
 end	
 
@@ -31,5 +31,17 @@ get '/' do
 end
 
 get '/register' do
+  erb :register
+end
+
+post '/register' do
+	@us = User.new params[:user]
+
+	if @us.save
+		@done = "Thank`s, #{@us.name}"
+	else
+		#'Ошибка записи - одно из полей не заполнено'
+		@error = @us.errors.full_messages.first
+	end	
   erb :register
 end

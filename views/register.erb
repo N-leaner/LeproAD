@@ -5,11 +5,11 @@
 <form action="/register" method="POST">
   <div class="form-group">
     <label>Login:</label>
-    <input type="text" class="form-control" placeholder="Login">
+    <input name="user[name]" type="text" class="form-control" placeholder="Login">
   </div>
   <div class="form-group">
     <label>Password:</label>
-    <input type="password" class="form-control" placeholder="Password">
+    <input name="user[password]" type="password" class="form-control" placeholder="Password">
   </div>
   <button type="submit" class="btn btn-primary">Register</button>
 </form>
