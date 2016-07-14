@@ -34,6 +34,10 @@ get '/register' do
   erb :register
 end
 
+get '/login' do
+  erb :login
+end
+
 post '/register' do
 	@us = User.new params[:user]
 
@@ -44,4 +48,34 @@ post '/register' do
 		@error = @us.errors.full_messages.first
 	end	
   erb :register
+end
+
+post '/login' do
+	@user = params[:user].strip
+	password = params[:password].strip
+
+	@error = ''
+	if @user == ''
+		@error = 'login should not be blank'
+	else
+		if password == ''		
+			@error = 'password should not be blank'
+		end
+	end	
+
+	if @error == ''
+		#us = User.where("name = ?", user)
+		us = User.find_by name: @user
+		if !us
+			@error = "user #{@user} not exists"
+		else
+			if us.password == password
+				@done = "You`re logged in"
+			else
+				@error = "Password wrong"
+			end	
+		end					
+	end	
+
+  erb :login
 end
