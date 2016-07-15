@@ -60,6 +60,7 @@ end
 
 get '/secure/:id' do
 	if params[:id] == 'post'
+		erb :new
 	elsif params[:id] == 'users'
 				
 	end	
@@ -78,6 +79,18 @@ post '/register' do
   erb :register
 end
 
+def find_user user, autority = ''
+	us = User.find_by name: user
+	if us
+		if autority != ''
+			if us.password != autority						
+  				us = nil		
+			end
+		end 										
+	end	
+	return us
+end	
+
 post '/login' do
 	@user = params[:user].strip
 	password = params[:password].strip
@@ -92,21 +105,35 @@ post '/login' do
 	end	
 
 	if @error == ''
-		#us = User.where("name = ?", user)
-		us = User.find_by name: @user
-		if !us
-			@error = "user #{@user} not exists"
-		else
-			if us.password == password
-				@done = "You`re logged in"
-				session[:identity] = @user
-  				where_user_came_from = session[:previous_url] || '/'
-  				redirect to where_user_came_from
-			else
-				@error = "Password wrong"
-			end	
-		end					
+		us = find_user @user, password
+		if us 
+			@done = "You`re logged in"
+			session[:identity] = @user
+	  		where_user_came_from = session[:previous_url] || '/'
+	  		redirect to where_user_came_from
+	  	else
+	  		@error = "user #{@user} not logged"
+		end				
 	end	
 
   erb :login
 end
+
+post '/secure/post' do
+	if username == ''
+		return erb 'You`re not logged in!'	
+	end	
+	cont = params[:content].strip
+	autor = find_user username
+	post = autor.posts.new
+	post.post = cont
+
+	if post.save
+		@done = "Thank`s, #{autor.name}, you post accepted"
+	else
+		#'Ошибка записи - одно из полей не заполнено'
+		@error = post.errors.full_messages.first
+	end	  
+	
+	erb 'That`s fine!'
+end	
