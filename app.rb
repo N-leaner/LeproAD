@@ -26,6 +26,20 @@ configure do
   enable :sessions
 end
 
+helpers do
+  def username
+    session[:identity] ? session[:identity] : 'Hello stranger'
+  end
+end
+
+before '/secure/*' do
+  unless session[:identity]
+    session[:previous_url] = request.path
+    @error = 'Sorry, you need to be logged in to visit ' + request.path
+    halt erb(:login)
+  end
+end
+
 get '/' do
 	erb "Hello! <a href=\"https://github.com/bootstrap-ruby/sinatra-bootstrap\">Original</a> pattern has been modified for <a href=\"http://rubyschool.us/\">Ruby School</a>"			
 end
@@ -37,6 +51,20 @@ end
 get '/login' do
   erb :login
 end
+
+get '/logout' do
+  session.delete(:identity)
+  @done = "Logged out"
+  erb "Have a nice day!"
+end
+
+get '/secure/:id' do
+	if params[:id] == 'post'
+	elsif params[:id] == 'users'
+				
+	end	
+
+end	
 
 post '/register' do
 	@us = User.new params[:user]
@@ -71,6 +99,9 @@ post '/login' do
 		else
 			if us.password == password
 				@done = "You`re logged in"
+				session[:identity] = @user
+  				where_user_came_from = session[:previous_url] || '/'
+  				redirect to where_user_came_from
 			else
 				@error = "Password wrong"
 			end	
