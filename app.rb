@@ -55,7 +55,7 @@ end
 get '/logout' do
   session.delete(:identity)
   @done = "Logged out"
-  erb "Have a nice day!"
+  redirect to '/'
 end
 
 get '/secure/:id' do
@@ -97,8 +97,9 @@ post '/login' do
 		if us 
 			@done = "You`re logged in"
 			session[:identity] = @user
-	  		where_user_came_from = session[:previous_url] || '/'
-	  		redirect to where_user_came_from
+	  		#where_user_came_from = session[:previous_url] || '/'
+	  		#redirect to where_user_came_from
+	  		redirect to '/'
 	  	else
 	  		@error = "user #{@user} not logged"
 		end				

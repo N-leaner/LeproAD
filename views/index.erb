@@ -1,7 +1,11 @@
 <% if !session[:identity] %>	
+<h3>
 	Hello <strong>Stranger</strong>, please <a href=/login>login</a> or <a href=/register>register</a>
+</h3>
 <% else %>	
+<h3>
 	Hello <strong><%= username %></strong>, are you ready to <a href=/secure/post>write</a> your first post?
+</h3>	
 <% end %>	
 
 
