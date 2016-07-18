@@ -42,6 +42,12 @@ end
 
 get '/' do
 	erb "Hello! <a href=\"https://github.com/bootstrap-ruby/sinatra-bootstrap\">Original</a> pattern has been modified for <a href=\"http://rubyschool.us/\">Ruby School</a>"			
+	if !session[:identity]
+		erb "Hello Stranger, please 
+		<a href=/login>login</a> or <a href=/register>register</a>"
+	else	
+		erb "Hello #{username}, are you ready to write your first post?" 
+	end				        	
 end
 
 get '/register' do
@@ -66,18 +72,6 @@ get '/secure/:id' do
 	end	
 
 end	
-
-post '/register' do
-	@us = User.new params[:user]
-
-	if @us.save
-		@done = "Thank`s, #{@us.name}"
-	else
-		#'Ошибка записи - одно из полей не заполнено'
-		@error = @us.errors.full_messages.first
-	end	
-  erb :register
-end
 
 def find_user user, autority = ''
 	us = User.find_by name: user
@@ -117,6 +111,20 @@ post '/login' do
 	end	
 
   erb :login
+end
+
+post '/register' do	
+	@us = User.new params[:user]
+
+	if @us.save
+		@done = "Thank`s, #{@us.name}"
+		session[:identity] = @us.name
+		redirect to '/'
+	else
+		#'Ошибка записи - одно из полей не заполнено'
+		@error = @us.errors.full_messages.first
+	end	
+  erb :register
 end
 
 post '/secure/post' do
