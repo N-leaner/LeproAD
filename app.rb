@@ -40,14 +40,8 @@ before '/secure/*' do
   end
 end
 
-get '/' do
-	erb "Hello! <a href=\"https://github.com/bootstrap-ruby/sinatra-bootstrap\">Original</a> pattern has been modified for <a href=\"http://rubyschool.us/\">Ruby School</a>"			
-	if !session[:identity]
-		erb "Hello Stranger, please 
-		<a href=/login>login</a> or <a href=/register>register</a>"
-	else	
-		erb "Hello #{username}, are you ready to write your first post?" 
-	end				        	
+get '/' do	
+	erb :index
 end
 
 get '/register' do
