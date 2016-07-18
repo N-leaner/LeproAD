@@ -41,6 +41,8 @@ before '/secure/*' do
 end
 
 get '/' do	
+	#@posts = Post.order 'created_at desc'
+	@posts = User.select('users.name, posts.*').joins(:posts).order('created_at desc')	
 	erb :index
 end
 

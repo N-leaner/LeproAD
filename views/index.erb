@@ -8,8 +8,13 @@
 </h3>	
 <% end %>	
 
-
-
 <br>
 <h2>Latest posts:</h2>
 <br>
+
+<% @posts.each do |post| %>
+<p>
+<%= post.created_at%> <strong><%= post.name %></strong> wrote:
+<%= post.post %>
+</p>		
+<% end %>
