@@ -41,7 +41,7 @@ before '/secure/*' do
 end
 
 get '/' do	
-	#@posts = Post.order 'created_at desc'
+	#@posts = Post.order 'created_at desc'	
 	@posts = User.select('users.name, posts.*').joins(:posts).order('created_at desc')	
 	erb :index
 end
@@ -64,14 +64,23 @@ get '/secure/:id' do
 	if params[:id] == 'post'
 		erb :new
 	elsif params[:id] == 'users'
-				
+	else	
+		#if params[:id].include? '/comments/'	
+
+		#end	
 	end	
 end	
 
-get '/comments/:post_id' do	
-	post_id = params[:post_id]
-	
-	erb :comments
+get '/secure/comments/:post_id' do	
+	#@post = Post.find_by id: post_id
+	@post = User.select('users.name, posts.*').joins(:posts).where('posts.id = ?',params[:post_id]) 	
+	if @post.size == 0
+		@error = "Page /comments/#{post_id} not found"
+		redirect to '/'		
+	else
+		@post = @post[0]
+		erb :comments		
+	end	
 end
 
 def find_user user, autority = ''
