@@ -42,7 +42,7 @@ end
 
 get '/' do	
 	#@posts = Post.order 'created_at desc'	
-	@posts = User.select('users.name, posts.*').joins(:posts).order('created_at desc')	
+	@posts = User.select('users.name, posts.*').joins(:posts).order('created_at desc')		
 	erb :index
 end
 
@@ -74,6 +74,7 @@ end
 get '/secure/comments/:post_id' do	
 	#@post = Post.find_by id: post_id
 	@post = User.select('users.name, posts.*').joins(:posts).where('posts.id = ?',params[:post_id]) 	
+	@comments = Comment.where('comments.post_id = ?',params[:post_id])
 	if @post.size == 0
 		@error = "Page /comments/#{post_id} not found"
 		redirect to '/'		
@@ -155,4 +156,32 @@ post '/secure/post' do
 	end	  
 	
 	erb 'That`s fine!'
+end	
+
+post '/secure/comments/:post_id' do
+
+	if username == ''
+		return erb 'You`re not logged in!'	
+	end	
+	comment = params[:comment].strip
+	autor = find_user username
+	post = Post.find_by id: params[:post_id]
+	co = post.comments.new
+	co.user = autor
+	co.comment = comment
+
+	if co.save
+		@done = "Thank`s, #{autor.name}, you comment accepted"
+	else
+		#'Ошибка записи - одно из полей не заполнено'
+		@error = co.errors.full_messages.first
+	end	  
+	
+	@post = User.select('users.name, posts.*').joins(:posts).where('posts.id = ?',params[:post_id]) 	
+	@comments = Comment.where('comments.post_id = ?',params[:post_id])
+	if @post.size >= 0		
+		@post = @post[0]		
+	end
+
+	erb :comments
 end	

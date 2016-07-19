@@ -5,4 +5,29 @@
 	Added <em><%= @post.name %></em> at <%= @post.created_at.to_s[0..9]%> in <%= @post.created_at.to_s[11..15]%>
 </p>
 
+<%if @comments.size > 0 %>	
+	<div class="container-fluid">
+		<h5>Comments:</h5>
+		<% @comments.each do |comment| %>
+		<% user = User.find_by id: comment.user_id %>
+			
+			<strong><%= comment.comment %></strong>
+			<p>
+			<small>added <em><%=user.name%></em> at <%= comment.created_at.to_s[0..9]%> in <%= comment.created_at.to_s[11..15]%></small>
+			</p>
+			<hr>
+			
+		<% end %>
+	</div>
+<%else%>	
 <hr>
+<%end%>
+
+<h4>Add comments:</h4>
+<p>
+	<form action="/secure/comments/<%= @post.id %>" method="POST">
+		<textarea name="comment"class="form-control" rows="6" placeholder="type comment text here"></textarea>
+		<br>
+		<button type="submit" class="btn btn-primary">Add comment</button>		
+	</form>
+</p>

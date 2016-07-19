@@ -36,7 +36,8 @@
 		</div>
 		<div class="row">
 			<div class="col-sm-10">
-			<a href="/secure/comments/<%= post.id %>">Comments</a>
+			<% co = Comment.where 'post_id = ?', post.id%>
+			<a href="/secure/comments/<%= post.id %>">Comments: <%= !co ? 0 : co.size%> </a>
 			</div>
 		</div>
 	<hr>	
