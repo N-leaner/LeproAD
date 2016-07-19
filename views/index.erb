@@ -15,26 +15,31 @@
 	<% @posts.each do |post| %>
 
 		<div class="row">
-			<div class="col-md-8">
-				<div class="bg-success">
-					<%= post.post %>
-				</div>	
+			<div class="col-sm-10">				
+				<%= post.post %>				
 			</div>	
 		</div>	
 
 		<div class="row">
-			<div class="col-md-2">		
-				<div class="text-left">
-					wrote <strong><%= post.name %></strong>					
+		
+			<div class="col-sm-2">		
+				<div class="text-left">				
+					
 				</div>			
 			</div>
 			
-			<div class="col-md-6">
+			<div class="col-sm-8">
 				<div class="text-right">
-					at <%= post.created_at.to_s[0..9]%> in <%= post.created_at.to_s[11..15]%>	
+					wrote <strong><%= post.name %></strong>	at <%= post.created_at.to_s[0..9]%> in <%= post.created_at.to_s[11..15]%>	
 				</div>
-			</div>	
+			</div>			
 		</div>
+		<div class="row">
+			<div class="col-sm-10">
+			<a href="/comments">Comments</a>
+			</div>
+		</div>
+	<hr>	
 	<br>
 	<% end %>	
 </div>
