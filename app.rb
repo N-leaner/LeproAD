@@ -64,6 +64,8 @@ get '/secure/:id' do
 	if params[:id] == 'post'
 		erb :new
 	elsif params[:id] == 'users'
+		@users = User.all
+		erb :list
 	else	
 		#if params[:id].include? '/comments/'	
 
