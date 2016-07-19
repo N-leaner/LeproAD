@@ -8,13 +8,33 @@
 </h3>	
 <% end %>	
 
-<br>
-<h2>Latest posts:</h2>
-<br>
+<div class="container-fluid">
+	<h3>Latest posts:</h3>
+	<br>
 
-<% @posts.each do |post| %>
-<p>
-<%= post.created_at%> <strong><%= post.name %></strong> wrote:
-<%= post.post %>
-</p>		
-<% end %>
+	<% @posts.each do |post| %>
+
+		<div class="row">
+			<div class="col-md-8">
+				<div class="bg-success">
+					<%= post.post %>
+				</div>	
+			</div>	
+		</div>	
+
+		<div class="row">
+			<div class="col-md-2">		
+				<div class="text-left">
+					wrote <strong><%= post.name %></strong>					
+				</div>			
+			</div>
+			
+			<div class="col-md-6">
+				<div class="text-right">
+					at <%= post.created_at.to_s[0..9]%> in <%= post.created_at.to_s[11..15]%>	
+				</div>
+			</div>	
+		</div>
+	<br>
+	<% end %>	
+</div>
