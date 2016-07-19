@@ -66,8 +66,13 @@ get '/secure/:id' do
 	elsif params[:id] == 'users'
 				
 	end	
-
 end	
+
+get '/comments/:post_id' do	
+	post_id = params[:post_id]
+	
+	erb :comments
+end
 
 def find_user user, autority = ''
 	us = User.find_by name: user
